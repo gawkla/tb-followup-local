@@ -22,6 +22,19 @@ Unlike a conventional snooze action, Follow-up Local watches a message in its cu
 
 Choose a message with an existing active follow-up or click **Reschedule** in the Active queue. The current follow-up is updated to the new deadline. Already generated local reminder emails **remain in Thunderbird**; a new reminder is generated only when the updated deadline becomes due.
 
+
+## Screenshots
+
+A preview of Follow-up Local running in Mozilla Thunderbird.
+
+| | |
+|:---:|:---:|
+| ![Follow-up Local screenshot 1](screenshots/2026-10-29_21-25-48.png) | ![Follow-up Local screenshot 2](screenshots/2026-10-29_21-27-24.png) |
+| **Screenshot 1** | **Screenshot 2** |
+| ![Follow-up Local screenshot 3](screenshots/2026-10-29_21-55-34.png) | ![Follow-up Local screenshot 4](screenshots/2026-10-30_08-38-38.png) |
+| **Screenshot 3** | **Screenshot 4** |
+
+
 ## Compatibility and limitations
 
 - Thunderbird **140.0+** as declared by the manifest (not tested on every release).
