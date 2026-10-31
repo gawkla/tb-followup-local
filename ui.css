@@ -1,0 +1,370 @@
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:13px;color:#273342;background:#f5f7f8}*{box-sizing:border-box}html{min-width:540px;min-height:610px}body{margin:0;width:540px;min-width:540px;min-height:610px}main{padding:13px;width:540px;min-height:610px;max-height:none;overflow:visible}main.composer{max-height:550px;min-height:0}header{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}.brand{display:flex;align-items:center;gap:10px}.brand strong{font-size:15px;color:#1c3540}.brand small{display:block;color:#6b7d87;font-size:11px;margin-top:2px}.mark{background:#dff1dc;border:1px solid #a1caa7;color:#216244;width:36px;height:36px;display:grid;place-items:center;border-radius:9px;font-size:21px}.composeBox,.tasksBox{background:#fff;border:1px solid #d6e0e5;border-radius:9px;padding:12px;margin-bottom:11px;box-shadow:0 2px 6px #192c3612}.sectionHeader{display:flex;align-items:center;gap:8px;margin-bottom:9px}.subtle{font-size:11px;color:#71838b}.selection{font-size:12px;color:#3e4e55;border-radius:6px;padding:8px;background:#f2f6f7;margin-bottom:10px;white-space:normal;word-wrap:break-word}.selection.fail{color:#852624;background:#fff1ee}.choice{display:flex;gap:18px;margin:9px 0}.choice label{font-weight:600;cursor:pointer}input[type=radio],input[type=checkbox]{accent-color:#2c7b5b;vertical-align:middle}.presets{display:flex;gap:6px;margin:9px 0}.presets button{flex:1;border:1px solid #bdcbd2;border-radius:5px;background:#f8fbfc;white-space:nowrap;padding:7px 4px;font-size:12px;cursor:pointer}.presets button.chosen{border-color:#65a380;background:#def1e4;color:#1e684a;font-weight:700}.dateRow{display:flex;gap:10px;margin:10px 0}.dateRow label{font-size:11px;color:#697983;flex:1}.dateRow input{display:block;margin-top:3px;width:100%;padding:6px;border:1px solid #bbcbd1;border-radius:5px;background:#fff;color:#213640;font-family:inherit}.dateRow label:last-child{max-width:125px}.option{display:block;margin:9px 0;cursor:pointer}.note{display:block;color:#74848b;font-size:11px;line-height:1.45;margin:7px 0 10px}.primary,.secondary{border:0;border-radius:6px;padding:9px 12px;cursor:pointer;font-weight:650;margin-right:8px}.primary{background:#296b4d;color:white}.primary:disabled{background:#95b2a4;cursor:not-allowed}.secondary{background:#edf2f3;color:#264652;border:1px solid #c3d0d5}.small{border:1px solid #c8d3d8;background:#fff;cursor:pointer;border-radius:5px;padding:3px 10px}.counter{border-radius:12px;background:#e6f0eb;padding:2px 8px;color:#35674d;font-weight:700;font-size:11px}.tabs{display:flex;border-bottom:1px solid #dce5e7;margin:4px 0 7px;gap:6px}.tabs button{border:0;border-bottom:2px solid transparent;padding:6px 8px;background:none;color:#657983;cursor:pointer}.tabs button.active{color:#236445;font-weight:700;border-bottom-color:#3e9268}.tasks{min-height:80px;max-height:240px;overflow-y:auto}.task{border-bottom:1px solid #e9eeef;padding:8px 2px}.task:last-child{border-bottom:none}.taskTop{display:flex;justify-content:space-between;gap:8px}.taskName{font-weight:650;color:#2c4553;background:none;border:none;padding:0;text-align:left;max-width:330px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.taskName:hover{text-decoration:underline;color:#146b4b}.type{font-size:10px;background:#edf3f3;border-radius:4px;padding:2px 4px;color:#576b75;margin-right:4px}.when{font-size:11px;color:#517259;font-weight:600;white-space:nowrap}.overdue{color:#ae5228}.taskMeta{color:#7c8a91;font-size:11px;margin:4px 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.taskActions{display:flex;gap:6px;align-items:center}.taskActions button{font-size:11px;color:#356d53;border:1px solid #d5e1dd;background:#f8fbf9;border-radius:4px;padding:3px 6px;cursor:pointer}.taskActions button:hover{background:#e7f4ea}.taskError{color:#ab453d;font-size:11px;margin-top:6px;word-break:break-word}.empty{text-align:center;padding:24px;color:#89969d}.foot{display:flex;justify-content:space-between;padding-top:8px;font-size:11px;color:#8a979b}.link{border:0;background:none;color:#387955;cursor:pointer}.status{min-height:19px;font-size:11px;color:#387955;padding:0 3px 6px}.status.error{color:#9b3636}
+
+
+/* 0.1.2 — a readable task-first panel, independently scrollable list */
+html { width:100%; height:100%; min-width:0; min-height:0; }
+body { width:100%; min-width:0; height:100vh; min-height:0; overflow:hidden; font-size:14px; }
+main { display:flex; flex-direction:column; gap:10px; width:100%; height:100vh; min-height:0; padding:14px; overflow:hidden; }
+header { flex:0 0 auto; margin:0; }
+.composeBox, .tasksBox { margin:0; }
+.composeBox { flex:0 0 auto; max-height:52vh; overflow-y:auto; }
+.composeBox.collapsed #createFields { display:none; }
+.composeBox.collapsed { padding:10px 14px; }
+.composeBox.collapsed .sectionHeader { margin-bottom:0; }
+.sectionHeader { min-height:25px; }
+.toggleCreate { margin-left:auto; color:#235f46; font-weight:600; }
+.tasksBox { flex:1 1 0; min-height:155px; display:flex; flex-direction:column; overflow:hidden; }
+.tasks { flex:1 1 0; min-height:95px; max-height:none; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; padding-right:4px; }
+.tasks::-webkit-scrollbar { width:12px; }
+.tasks::-webkit-scrollbar-thumb { background:#b4c9be; border-radius:7px; border:2px solid white; }
+.task { padding:13px 8px; border-bottom:1px solid #e0e7e7; }
+.task:nth-child(even) { background:#f8faf9; }
+.task.status-reminded { border-left:3px solid #cc8736; padding-left:6px; }
+.task.status-error { border-left:3px solid #ba5750; padding-left:6px; }
+.taskName { font-size:14px; max-width:none; flex:1; min-width:0; }
+.taskMeta { font-size:12px; color:#62737c; margin:6px 0; }
+.when { color:#355e4a; font-size:12px; }
+.taskActions button { font-size:12px; padding:4px 9px; }
+.tabs button { font-size:13px; padding:8px 10px; }
+.searchLabel { flex:0 0 auto; display:block; margin:2px 0 9px; }
+.searchLabel input { width:100%; border:1px solid #b8cbd2; border-radius:6px; padding:9px 11px; background:#f8fbfa; color:#263a41; font:inherit; }
+.visuallyHidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+.foot { flex:0 0 auto; align-items:center; font-size:12px; }
+.checkNow { padding:6px 8px; margin:0; font-size:12px; }
+.status { flex:0 0 auto; min-height:22px; padding:1px 4px; font-size:12px; }
+/* The compose-action popup shares this stylesheet, but is not a windowed task list. */
+body:has(main.composer) { width:540px; height:auto; overflow:auto; }
+main.composer { display:block; height:auto; max-height:none; min-height:0; padding:13px; overflow:visible; }
+main.composer .composeBox { max-height:none; }
+
+/* 0.1.3 — compact diagnostics for unresolved replies */
+.taskActions { flex-wrap:wrap; }
+.taskActions .diagnoseButton { border-color:#7ba2aa; color:#255b6c; }
+.diagnostic { margin-top:9px; background:#f4f8fb; border:1px solid #c7dae3; border-radius:6px; padding:9px; font-size:12px; line-height:1.55; color:#324851; }
+.diagnostic strong { display:block; margin-bottom:5px; }
+.diagnostic button { margin-top:6px; }
+
+/* 0.1.4 — clearer per-task routing; five compact preset buttons */
+.taskRouting {color:#33674e; background:#eef7f0; border-left:3px solid #91c1a3;
+  border-radius:3px; font-size:11.5px; line-height:1.4; margin:5px 0 8px; padding:5px 8px;}
+.taskActions {row-gap:5px;}
+.presets button {min-width:0; padding:7px 3px; font-size:11px;}
+
+/* 0.1.6 — kompaktowe ustawienia wspólnej domyślnej godziny */
+.settingsBox { flex:0 0 auto; background:#f0f7f2; border:1px solid #bed9c7;
+  border-radius:8px; padding:9px 12px; font-size:12px; color:#295a40; }
+.settingsBox summary { cursor:pointer; font-weight:600; }
+.settingsBox summary strong { font-weight:750; }
+.settingsControls { display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap; }
+.settingsControls label { font-weight:500; }
+.settingsControls input { border:1px solid #a9c8b4; border-radius:5px;
+  padding:5px 7px; color:#1f4734; background:#fff; font:inherit; }
+.settingsBox .note { margin-bottom:0; }
+
+/* 0.1.7 — zdecydowany kontrast, czytelna hierarchia czynności i wskazówki */
+:root { --fu-green:#0e6540; --fu-green-dark:#074b2e; --fu-blue:#13539a;
+  --fu-blue-dark:#093d75; --fu-orange:#945009; --fu-red:#a42e2e;
+  --fu-border:#9cb5c2; --fu-ink:#203342; }
+body { color:var(--fu-ink); background:#e9eff4; }
+header .brand strong { color:#082f4d; font-size:17px; }
+.brand small { color:#435d6e; font-weight:550; }
+.mark { border:2px solid #278259; background:#d1f0de; color:#075a35; }
+.composeBox,.tasksBox { border:1px solid #a8becb; box-shadow:0 3px 12px #163b5522; }
+.sectionHeader strong { color:#103f63; font-size:14px; }
+.sectionHeader .subtle { color:#4a6475; }
+.settingsBox { background:#e3f3eb; border:1px solid #73aa8a; color:#105337; }
+.settingsBox summary { color:#095033; font-weight:750; }
+.settingsBox summary:hover { color:#022f1c; }
+.settingsBox button, button.small { background:#eef4f7; border:1px solid #7594a7;
+  color:#154567; font-weight:700; padding:6px 11px; }
+button.small:hover { background:#dbeaf4; border-color:#28668f; }
+.toggleCreate { margin-left:auto; background:#e0ebf5 !important; color:#144c7b !important;
+  border-color:#7da2bf !important; }
+.selection { border:1px solid #c5d6e1; color:#23465f; background:#eaf2f8; font-weight:600; }
+.note { color:#4a6170; line-height:1.5; }
+.option { color:#183b50; font-weight:650; }
+input[type=checkbox],input[type=radio]{ accent-color:#006840; }
+.presets button { background:#f0f5fa; color:#1a4e70; border:1px solid #93aec0;
+  font-size:12px; font-weight:650; }
+.presets button:hover { background:#dcebf7; border-color:#27608a; }
+.presets button.chosen { color:#fff; background:#126642; border:1px solid #075333;
+  box-shadow:0 1px 3px #093d2730; }
+.primary { background:#075f39; color:#fff; font-size:14px; border:1px solid #044c2b;
+  box-shadow:0 2px 5px #075f3938; }
+.primary:hover:not(:disabled) { background:#034829; }
+.primary:disabled { background:#8aa99a; border-color:#81988c; box-shadow:none; }
+.secondary { background:#e4eff8; color:#124877; border:1px solid #6b97b8; }
+.secondary:hover { background:#cee3f4; border-color:#205e8b; }
+.counter { background:#0d6440; color:white; font-size:12px; padding:3px 9px; }
+.tabs { border-bottom:2px solid #b5c9d6; }
+.tabs button { color:#37566d; font-weight:600; border-bottom-width:3px; }
+.tabs button.active { color:#07563a; border-bottom-color:#067449; font-weight:800; }
+.tabs button:hover { color:#083f67; background:#e9f4fb; }
+.searchLabel input { background:white; border-color:#8cabbc; }
+.dblTip { color:#154e78; background:#e4f0fa; border:1px solid #b5d2e7;
+  border-radius:5px; margin-left:auto; font-size:11px; padding:4px 7px; font-weight:650; }
+.tasks { scrollbar-color:#719cb9 #e7f0f5; }
+.task { margin:3px 0 6px; padding:11px 12px; border:1px solid #bdd0da;
+  border-left:5px solid #23855f; background:#fcfefe; border-radius:7px;
+  cursor:pointer; transition:background-color .1s,border-color .1s; }
+.task:nth-child(even) { background:#f1f7fb; }
+.task:hover, .task:nth-child(even):hover { background:#e8f4fb; border-color:#4c94be; }
+.task:focus-visible { outline:3px solid #2372ad; outline-offset:2px; }
+.task.status-reminded { border-left:5px solid #d3841a; padding-left:12px; }
+.task.status-error { border-left:5px solid #bc3e38; padding-left:12px; }
+.task.status-answered { border-left:5px solid #1b7b58; padding-left:12px; }
+.task.status-done { border-left:5px solid #718491; padding-left:12px; }
+.taskName { color:#123f61; font-size:14px; font-weight:800; cursor:pointer; }
+.taskName:hover { color:#065c9b; text-decoration:underline; }
+.taskMeta { color:#435c6c; font-size:12px; font-weight:550; }
+.taskRouting { background:#dff1e7; border-left:4px solid #3d9364; color:#17573b;
+  font-size:12px; font-weight:600; }
+.when { color:#0b6545; font-size:12px; font-weight:750; }
+.when.overdue { color:#a3400d; }
+.taskActions { gap:6px; margin-top:8px; }
+.taskActions button { padding:6px 9px; font-weight:700; line-height:1.2;
+  border-radius:5px; font-size:11.5px; cursor:pointer; }
+.taskActions button:hover { filter:brightness(.91); }
+.taskActions button:disabled { opacity:.55; cursor:wait; }
+.taskActions .navigateButton { color:#fff; border:1px solid #093e79; background:#145ba2; }
+.taskActions .navigateButton:hover { background:#09467f; }
+.taskActions .finishButton { color:#874109; background:#fff0dc; border:1px solid #dca46a; }
+.taskActions .utilityButton { color:#174e77; background:#e6f1fa; border:1px solid #90b8d5; }
+.taskActions .diagnoseButton { color:#602f83; background:#f2eafb; border:1px solid #bda4d0; }
+.taskActions .answeredButton { color:#095e3b; background:#d9f0e4; border:1px solid #74ac8c; }
+.taskActions .retryButton { color:#a22d26; background:#fce9e6; border:1px solid #d39a95; }
+.diagnostic { border-color:#90b3d3; background:#edf5fb; }
+.status { color:#10583c; font-weight:600; }
+.status.error { color:#a02828; }
+.composeBox { max-height:45vh; }
+.tasksBox { min-height:170px; }
+@media(max-height:710px){
+ .composeBox { max-height:40vh; }
+ .dblTip { display:none; }
+}
+.tasks .task:last-child { border-bottom:1px solid #bdd0da; }
+
+
+/* 0.1.8 — prosty temat i aktualny folder, szeroki panel, jeden rząd akcji */
+.selection { padding:12px 15px; border:1px solid #7aaacc; background:#e8f3fc; }
+.selectionTitle { font-size:17px; font-weight:800; color:#073f6f; line-height:1.35;
+  overflow-wrap:anywhere; }
+.selectionFolder { margin-top:7px; font-size:13px; font-weight:700; color:#164f40;
+  line-height:1.5; overflow-wrap:anywhere; }
+.selectionProblem { margin-top:5px; color:#a51e27; font-weight:700; }
+.taskMeta { font-size:13px; color:#125d47; font-weight:700; white-space:normal;
+  overflow:visible; text-overflow:clip; overflow-wrap:anywhere; line-height:1.4;
+  margin:6px 0 9px; }
+.taskRouting { display:none; }
+.taskTop { align-items:flex-start; }
+.taskName { white-space:normal; overflow-wrap:anywhere; text-overflow:clip; }
+.taskActions { display:flex; flex-wrap:nowrap; white-space:nowrap; overflow-x:auto;
+  scrollbar-width:thin; align-items:center; gap:7px; padding-bottom:3px; }
+.taskActions button { flex:0 0 auto; white-space:nowrap; font-size:12px; padding:7px 10px; }
+.tasks { scrollbar-gutter:stable; }
+.task { padding:15px 13px; }
+@media (max-width:900px) {
+  .taskActions button { font-size:11px; padding:6px 8px; }
+}
+
+/* 0.1.9 — compact top-right settings gear (no extra vertical settings bar). */
+header { position:relative; z-index:8; }
+.headerTools { display:flex; align-items:center; gap:8px; }
+.headerTools > button { min-width:38px; min-height:36px; font-size:19px; }
+header .settingsBox { display:block; position:relative; z-index:12; border:0;
+  background:transparent; padding:0; margin:0; color:#0a4c72; }
+header .settingsBox summary { width:38px; height:36px; display:grid; place-items:center;
+  list-style:none; padding:0; border:1px solid #709ab5; border-radius:6px;
+  font-size:23px; color:#104f7c; background:#e9f2fa; cursor:pointer; }
+header .settingsBox summary::-webkit-details-marker { display:none; }
+header .settingsBox summary:hover, header .settingsBox[open] summary {
+  background:#d2eafc; border-color:#1765a5; }
+header .settingsBox summary:focus-visible {outline:3px solid #1677b8;outline-offset:2px;}
+header .settingsPopover { position:absolute; right:0; top:calc(100% + 9px); width:355px;
+  padding:16px; border:1px solid #6893ad; border-radius:9px; background:#f8fcff;
+  box-shadow:0 12px 32px #153b5d55; color:#173d54; font-size:13px; }
+header .settingsPopover > strong { font-size:14px; display:block; color:#073b5c; }
+header .settingsPopover .settingsControls {display:block; margin:12px 0 0;}
+header .settingsPopover .settingsControls label {display:block;font-weight:700;margin-bottom:6px;}
+header .settingsTimeRow {display:flex;align-items:center;gap:10px;}
+header .settingsTimeRow input {min-width:0;flex:1;}
+header .settingsPopover .note {font-size:12px; margin:10px 0 0;}
+.selectionTitle, .taskName { font-weight:800; }
+.selectionFolder, .taskMeta { color:#115e49; }
+
+/* 0.1.10 — delikatnie szersze okienko ComposeAction, tylko formularz po PPM. */
+body:has(main.composer) {width:610px; min-width:610px; max-width:610px;}
+body:has(main.composer) main.composer {width:100%;}
+body.createOnly main {gap:8px; padding:13px; height:100vh;}
+body.createOnly .tasksBox {display:none;}
+body.createOnly .composeBox {flex:0 0 auto; max-height:none; overflow:visible;}
+body.createOnly .composeBox .sectionHeader {margin-bottom:8px;}
+body.createOnly .composeBox .note {margin:7px 0;}
+body.createOnly .status {margin-top:auto;}
+
+/* Diagnostyka wysuwana dopiero na zadanie uzytkownika. */
+.diagnosticsPanel { position:fixed;z-index:90;inset:50px 15px 35px;
+  border:2px solid #2f6684;background:#fff;border-radius:9px;padding:12px;
+  box-shadow:0 6px 30px #0c314f66;display:flex;flex-direction:column;gap:8px; }
+.diagnosticsPanel[hidden] {display:none!important}
+.diagnosticsPanel .sectionHeader {display:flex;flex-wrap:wrap}
+.diagnosticsPanel p {margin:0 0 4px;font-size:12px}
+#diagnosticsText {flex:1;width:100%;min-height:150px;resize:none;white-space:pre;
+  font:12px/1.5 Consolas,"Courier New",monospace;color:#17252c;background:#f5fafc;
+  padding:10px;border:1px solid #8da6b5;border-radius:5px;}
+#openFullPanel:not([hidden]){display:block;margin-top:4px}
+
+/* 0.1.13: explicit choice when copies share RFC Message-ID. */
+.taskActions .chooseCopyButton {background:#ffc954;color:#543300;border:1px solid #ae7800;font-weight:800}
+.copyChooser {margin:10px 0;padding:12px;border:2px solid #d8a121;border-radius:8px;background:#fffaf0;white-space:normal}
+.copyChooser strong{display:block;margin-bottom:8px;color:#553900;font-size:13px}
+.copyOption {padding:9px;margin:6px 0;border:1px solid #d5c9a6;border-radius:6px;background:white}
+.copyFolder{font-weight:750;color:#145c4a;font-size:13px}
+.copyDetails{color:#4a5560;font-size:11px;line-height:1.4;margin:4px 0 7px;overflow-wrap:anywhere}
+.copySelectButton{border:1px solid #155c86;border-radius:5px;color:white;background:#126394;padding:6px 10px;font-weight:750;cursor:pointer}
+.copySelectButton:hover{background:#084c77}
+.copySelectButton:disabled{opacity:.5}
+
+
+/* 0.1.15 — kolejka na pierwszym planie, gesty i funkcje bez zmian. */
+main { gap:7px; padding:10px 12px; }
+header { margin-bottom:0; }
+.composeBox,.tasksBox { border-radius:7px; margin:0; }
+.composeBox.collapsed { padding:6px 11px; overflow:visible; }
+.composeBox.collapsed .sectionHeader { min-height:24px; margin:0; }
+.composeBox.collapsed .sectionHeader .subtle { display:none; }
+.composeBox.collapsed .toggleCreate { padding:4px 9px; font-size:11px; }
+.tasksBox { min-height:180px; padding:8px 10px; }
+.taskListHeader { gap:8px; min-height:30px; margin:0 0 4px; }
+.taskListHeader strong { white-space:nowrap; }
+.taskListHeader .searchLabel { flex:1; margin:0 8px; min-width:180px; }
+.taskListHeader .searchLabel input { width:100%; min-height:32px; font-size:12px; padding:5px 10px; border:1px solid #7b9db2; }
+.taskListHeader .dblTip { margin-left:0; white-space:nowrap; padding:4px 8px; }
+.tabs { margin:0 0 5px; gap:7px; }
+.tabs button { font-size:12px; padding:5px 10px; }
+.tasks { min-height:0; padding-right:4px; }
+.task, .task.status-reminded, .task.status-error {
+ display:grid; grid-template-columns:minmax(245px,1fr) minmax(0,auto);
+ grid-template-rows:auto auto; column-gap:12px; align-items:center;
+ min-height:51px; margin:0 0 4px; padding:5px 9px;
+ border-left-width:4px; border-radius:5px; box-shadow:none;
+}
+.taskTop { grid-column:1; grid-row:1; min-width:0; align-items:baseline; gap:8px; }
+.taskName { min-width:0; flex:1; max-width:none; font-size:12.5px; line-height:1.25;
+ white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+.when { flex:none; font-size:10.5px; font-weight:700; }
+.taskMeta { grid-column:1; grid-row:2; min-width:0; font-size:10.5px;
+ color:#315c4f; font-weight:600; line-height:1.2; margin:3px 0 0;
+ white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+.taskActions { grid-column:2; grid-row:1 / span 2; min-width:0; max-width:100%;
+ align-self:center; justify-self:end; display:flex; flex-wrap:nowrap; gap:4px;
+ overflow-x:auto; white-space:nowrap; margin:0; padding:1px 0 2px; }
+.taskActions button { flex:none; font-size:10.5px; line-height:1.1; min-height:26px;
+ padding:4px 7px; border-radius:4px; }
+.taskError, .copyChooser, .diagnostic { grid-column:1 / -1; margin:4px 0; }
+.taskError { font-size:10.5px; }
+.foot { padding-top:5px; font-size:11px; }
+.checkNow { padding:5px 8px; font-size:11px; }
+.status { min-height:16px; padding:0 2px; font-size:11px; }
+@media(max-width:790px){
+ .task, .task.status-reminded, .task.status-error {display:block;}
+ .taskActions{margin-top:5px;justify-self:stretch;}
+ .taskMeta{margin:3px 0;}
+ .taskListHeader .dblTip{display:none;}
+}
+/* Formularz z PPM i panel Compose pozostają przestronne. */
+body.createOnly .composeBox {max-height:none;}
+
+
+/* 0.1.16 — mocne zolte oznaczenie spraw wymagajacych uwagi.
+   Wyroznienie nie zmienia gestow, przyciskow ani gestosci listy. */
+.tasks .task.needs-attention,
+.tasks .task.needs-attention:nth-child(even) {
+  background-color:#ffdc45;
+  border-color:#c18a00;
+  border-left:5px solid #ae6e00;
+  color:#302900;
+}
+.tasks .task.needs-attention:hover,
+.tasks .task.needs-attention:nth-child(even):hover,
+.tasks .task.needs-attention:focus-within {
+  background-color:#ffcc27;
+  border-color:#936200;
+}
+.tasks .task.needs-attention .taskName { color:#352600; }
+.tasks .task.needs-attention .taskMeta { color:#574500; }
+.tasks .task.needs-attention .when { color:#5e3400; font-weight:850; }
+.tasks .task.needs-attention .taskName:hover {color:#1b4575;}
+
+
+/* 0.1.22 — unobtrusive, voluntary support link in the full task panel only. */
+.supportBanner {
+  flex: 0 0 auto;
+  min-height: 22px;
+  text-align: center;
+  font-size: 11px;
+  line-height: 18px;
+  color: #5e6f7a;
+  padding: 1px 0;
+  white-space: nowrap;
+}
+.supportBanner a {
+  font-weight: 750;
+  color: #125b85;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.supportBanner a:hover, .supportBanner a:focus-visible { color: #06436a; }
+body.createOnly .supportBanner { display: none; }
+
+
+/* 0.1.23: Ko-fi inside the gear menu, not below the main window. */
+header .settingsPopover .supportBanner {
+  display:block;
+  white-space:normal;
+  text-align:left;
+  margin-top:12px;
+  padding:10px 11px;
+  font-size:12px;
+  line-height:1.5;
+  background:#eef6fa;
+  border:1px solid #bbd9e8;
+  border-radius:6px;
+}
+body.createOnly header .settingsPopover .supportBanner { display:block; }
+
+/* Clearing finished tasks is an explicit action inside that tab only. */
+.tabs #clearFinished {
+  margin-left:auto;
+  align-self:center;
+  padding:4px 10px;
+  border:1px solid #bf7955;
+  border-radius:5px;
+  background:#fff0e5;
+  color:#8a3210;
+  font-size:11px;
+  font-weight:750;
+  cursor:pointer;
+}
+.tabs #clearFinished:hover:not(:disabled) { background:#ffdfce; border-color:#a75536; color:#702705; }
+.tabs #clearFinished:disabled { opacity:.5; cursor:wait; }
+.tabs #clearFinished[hidden] { display:none; }
+
+/* 0.1.26: non-destructive rescheduling of an existing follow-up. */
+.existingNotice { background:#fff4d6; border:1px solid #d7a34d; border-left:5px solid #bc7b11;
+  color:#66400e; border-radius:6px; padding:8px 10px; margin:7px 0 10px;
+  font-size:12px; font-weight:700; line-height:1.5; }
+.existingNotice[hidden] { display:none; }
+.rescheduleEditor { margin-top:8px; padding:9px 11px; background:#f2f8ff;
+  border:1px solid #8ab5d6; border-radius:6px; cursor:default; }
+.rescheduleHint { font-size:12px; font-weight:650; color:#234a67; margin-bottom:7px; }
+.rescheduleRow { display:flex; gap:7px; align-items:center; flex-wrap:wrap; }
+.rescheduleRow input { background:#fff; color:#183c55; border:1px solid #9bb8ca;
+  border-radius:5px; padding:6px 5px; font:inherit; }
+.rescheduleRow input[type=date] { min-width:155px; }
+.rescheduleRow input[type=time] { width:115px; }
+.rescheduleRow button { font:inherit; font-weight:650; padding:6px 10px; border:1px solid #9bb8ca;
+  border-radius:5px; background:#fff; color:#245176; cursor:pointer; }
+.rescheduleRow button.rescheduleSave { background:#106444; color:#fff; border-color:#075336; }
+.rescheduleMove { display:flex; align-items:center; gap:7px; font-size:12px;
+  color:#365c69; margin-top:8px; }

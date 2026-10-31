@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Set Follow-up</title><link rel="stylesheet" href="ui.css"></head>
+<body><main class="composer">
+  <header><div class="brand"><span class="mark">✉</span><div><strong>Set Follow-up</strong><small>Activates only after the message is sent</small></div></div></header>
+  <section class="composeBox">
+    <div id="composeInfo" class="selection">Checking compose window…</div>
+    <small class="note">If a reply arrives, the follow-up is marked answered; otherwise a local reminder is generated.</small>
+    <div class="presets"><button type="button" data-days="1" title="Tomorrow at the default time">+1 day</button><button type="button" data-days="3" class="chosen" title="Default: in 3 days at the configured time">+3 days</button><button type="button" data-days="7" title="In 7 days at the default time">+7 days</button><button type="button" data-days="21" title="In 21 days at the default time">+21 days</button><button type="button" data-days="custom" title="Choose a custom due date">Calendar</button></div>
+    <div class="dateRow"><label>Date <input id="day" type="date"></label><label>Time <input id="hour" type="time" value="08:15"></label></div>
+    <label class="option" title="When checked, move the original to Inbox when due, without copying it."><input id="move" type="checkbox" checked> Move to Inbox only when due</label>
+    <small class="note">Nothing is sent or moved by this action. After you send the message normally, its saved copy will be monitored.</small>
+    <button id="save" class="primary" title="Store the follow-up and close this popup. The task will activate after you send the message.">Set after sending</button><button id="clear" class="secondary" title="Cancel the pending follow-up setting. No message is sent.">Cancel</button>
+  </section>
+  <div id="status" aria-live="polite" class="status"></div>
+</main><script src="compose-ui.js"></script></body></html>

@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Follow-up Local</title><link rel="stylesheet" href="ui.css"></head>
+<body><main>
+  <header><div class="brand"><span class="mark">⏱</span><div><strong>Follow-up Local</strong><small>Local Folders · one follow-up queue</small></div></div><div class="headerTools">
+    <details class="settingsBox" id="settingsSection">
+      <summary role="button" aria-label="Settings" title="Set the default reminder time">⚙</summary>
+      <div class="settingsPopover">
+        <strong>Settings · time <span id="settingsHourText">08:15</span></strong>
+        <div class="settingsControls">
+          <label for="defaultHour">Default time for +1 / +3 / +7 / +21 days</label>
+          <div class="settingsTimeRow"><input id="defaultHour" type="time" value="08:15" aria-label="Default reminder time"><button id="saveDefaultHour" type="button" class="small" title="Save the default time. Existing tasks will not change.">Save</button></div>
+        </div>
+        <small class="note">Applies to new follow-ups only; existing due dates will not change.</small>
+        <div id="supportBanner" class="supportBanner" aria-label="Support development">☕ If you like my work — <a id="supportLink" href="https://ko-fi.com/gawkla" target="_blank" rel="noopener noreferrer" title="Support development on Ko-fi (opens your default browser)">buy me a coffee</a></div>
+      </div>
+    </details>
+    <button id="showDiagnostics" class="small" type="button" aria-controls="diagnosticsPanel" aria-expanded="false" title="Open the diagnostic log, including hidden tasks and tag errors; retry tag assignment.">Log</button>
+    <button id="refresh" class="small" title="Refresh the selected message and task list">↻</button>
+  </div></header>
+  <section class="composeBox" id="createSection">
+    <div class="sectionHeader"><strong>New follow-up</strong><span class="subtle">for the selected message</span><button id="toggleCreate" class="small toggleCreate" type="button" aria-expanded="true" title="Expand or collapse the new follow-up form; it collapses automatically when no message is selected.">Collapse form ▴</button></div>
+    <div id="createFields">
+    <div id="selected" class="selection" aria-live="polite">Checking selection…</div>
+    <div id="existingNotice" class="existingNotice" hidden aria-live="polite"></div>
+    <small class="note">If a reply arrives, the follow-up is marked answered. Otherwise, a local reminder message is created when due.</small>
+    <div class="presets"><button type="button" data-days="1" title="Due tomorrow at the default time">+1 day</button><button type="button" data-days="3" class="chosen" title="Default: due in 3 days at the configured time">+3 days</button><button type="button" data-days="7" title="Due in 7 days at the default time">+7 days</button><button type="button" data-days="21" title="Due in 21 days at the default time">+21 days</button><button type="button" data-days="custom" title="Select a custom date and time">Calendar</button></div>
+    <div class="dateRow"><label title="Exact due date">Due date <input id="day" type="date" title="Reminder date"></label><label title="Exact due time">Time <input id="hour" type="time" value="08:15" title="Reminder time"></label></div>
+    <label class="option" title="When checked, move the original to Local Folders Inbox when due (without duplicating it). Otherwise, leave it where it is."><input id="move" type="checkbox" checked> Move the monitored message to Inbox when due (no copy)</label>
+    <small class="note">The message stays in its folder until due. The reminder is created locally, never sent. If moving is disabled, only the reminder appears in Inbox.</small>
+    <button type="button" id="add" class="primary" title="Save the follow-up and close this window. The message stays in its folder until due.">✓ Save follow-up and close</button>
+    </div>
+  </section>
+  <section class="tasksBox">
+    <div class="sectionHeader taskListHeader"><strong>Follow-up queue</strong><span id="count" class="counter">0</span>
+      <label class="searchLabel"><span class="visuallyHidden">Search by subject or folder</span><input id="taskSearch" type="search" placeholder="Search subject or folder…" autocomplete="off" title="Live case-insensitive filtering. Clear the field to show all tasks."></label>
+      <span class="dblTip" title="Open the original even after it has moved to another folder">Double-click → original</span></div>
+    <div class="tabs"><button data-view="active" class="active" title="Unanswered follow-ups, including those already reminded">Active</button><button data-view="answered" title="Follow-ups with detected or manually recorded replies">Answered</button><button data-view="done" title="Finished follow-ups preserved in history">Finished</button><button id="clearFinished" type="button" hidden title="Remove all finished records from the queue history. Does not delete or modify email messages.">Clear finished</button></div>
+    <div id="tasks" class="tasks"><div class="empty">Loading tasks…</div></div>
+    <div class="foot"><span id="shown"></span><button id="checknow" class="secondary checkNow" title="Check Local Folders for replies and due follow-ups. Does not send email.">↻ Check replies and due dates</button></div>
+  </section>
+  <section id="diagnosticsPanel" class="diagnosticsPanel" hidden>
+    <div class="sectionHeader"><strong>Follow-up diagnostics</strong>
+      <button type="button" id="refreshDiagnostics" class="small">Refresh report</button>
+      <button type="button" id="repairActiveTags" class="small">Repair active tags</button>
+      <button type="button" id="closeDiagnostics" class="small">Close</button>
+    </div>
+    <p>The report includes all saved tasks (including those hidden by the current tab) and the latest 100 log entries. Copy it when reporting a problem.</p>
+    <textarea id="diagnosticsText" readonly spellcheck="false"></textarea>
+  </section>
+  <button type="button" id="openFullPanel" class="secondary" hidden>Open full task list</button>
+  <div id="status" aria-live="polite" class="status"></div>
+</main><script src="ui.js"></script></body></html>

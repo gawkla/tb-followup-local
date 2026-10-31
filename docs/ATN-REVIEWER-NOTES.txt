@@ -1,0 +1,12 @@
+Follow-up Local — release 0.1.26
+
+This add-on supports Thunderbird Local Folders (account type none) only. It does not work with IMAP/POP folders.
+
+How to test rescheduling:
+1. Create a Local Folders follow-up on a nonessential message.
+2. Select that same message and invoke Follow-up again. The UI should detect the existing active follow-up, allowing you to update its deadline rather than creating a duplicate.
+3. Alternatively, open the Active task list and press Reschedule on a waiting/reminded task.
+4. Updating an existing follow-up keeps its task ID; it does not send SMTP mail or create a new reminder immediately.
+5. Local reminder EML is generated when the new deadline is reached.
+
+The extension requires Thunderbird messages and folder permissions for local message reading, tagging, moving, and EML importing.
